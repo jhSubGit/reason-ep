@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>박호성 — 이유 EP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Caveat:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f0eee8;
+      --paper-warm: #e8e5dc;
+      --paper-cool: #e4e2ea;
+      --paper-deep: #d8d5ce;
+      --line: #c8c4d0;
+      --line-faint: #dcd8e2;
+      --ink: #1c1a18;
+      --ink-soft: #3a3632;
+      --ink-light: #6a665e;
+      --ink-muted: #9a968e;
+      --ink-faint: #b8b4ac;
+      --accent: #4a46a8;
+      --accent-soft: #6e6ac0;
+      --accent-faint: rgba(74, 70, 168, 0.08);
+      --red-mark: #c44a3e;
+      --shadow: rgba(28, 26, 24, 0.06);
+      --font-serif: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+      --font-sans: 'IBM Plex Sans KR', -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-serif);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Paper texture overlay */
+    .paper-texture {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* === NAV === */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(240, 238, 232, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(200, 196, 208, 0.3);
+    }
+    .nav-left {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+    .nav-listen {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.5rem 1.4rem;
+      border: 1px solid rgba(74, 70, 168, 0.2);
+      border-radius: 100px;
+      transition: all 0.3s ease;
+    }
+    .nav-listen:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* === HERO === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 0 6rem;
+      position: relative;
+    }
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    /* Album art */
+    .album-frame {
+      position: relative;
+    }
+    .album-shadow {
+      position: absolute;
+      bottom: -20px;
+      left: 10%;
+      right: 10%;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(28, 26, 24, 0.12), transparent 70%);
+      filter: blur(15px);
+    }
+    .album-art {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.06),
+        0 12px 40px rgba(0,0,0,0.08),
+        0 0 0 1px rgba(0,0,0,0.04);
+      opacity: 0;
+      transform: translateY(30px) rotate(-1deg);
+      animation: artReveal 1s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes artReveal {
+      to { opacity: 1; transform: translateY(0) rotate(-1deg); }
+    }
+    .album-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Tape effect */
+    .tape {
+      position: absolute;
+      width: 80px;
+      height: 28px;
+      background: rgba(255, 255, 240, 0.55);
+      backdrop-filter: blur(2px);
+      z-index: 2;
+      transform: rotate(-3deg);
+      top: -12px;
+      right: 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .tape-2 {
+      top: auto;
+      bottom: -10px;
+      left: 25px;
+      right: auto;
+      transform: rotate(2deg);
+      width: 70px;
+    }
+    /* Handwritten note near album */
+    .album-note {
+      position: absolute;
+      bottom: -50px;
+      right: -10px;
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      color: var(--ink-muted);
+      transform: rotate(2deg);
+      opacity: 0;
+      animation: fadeIn 0.8s 1.2s ease forwards;
+    }
+    .album-note::before {
+      content: '←';
+      margin-right: 0.3rem;
+    }
+
+    /* Hero text */
+    .hero-text {
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeSlide 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeSlide {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .hero-ep-label {
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--ink);
+      letter-spacing: -0.04em;
+      margin-bottom: 0.4rem;
+    }
+    .hero-title-en {
+      font-family: var(--font-hand);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--ink-light);
+      margin-bottom: 2rem;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .hero-artist {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+    .hero-meta {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero-meta .dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--ink-faint);
+    }
+    .hero-desc {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 2;
+      color: var(--ink-light);
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Stream buttons */
+    .stream-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .stream-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 100px;
+      transition: all 0.35s ease;
+    }
+    .stream-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .stream-btn-apple {
+      background: var(--ink);
+      color: white;
+    }
+    .stream-btn-apple:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(28, 26, 24, 0.2);
+    }
+    .stream-btn-spotify {
+      background: white;
+      color: #1a1a1a;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .stream-btn-spotify svg { color: #1db954; }
+    .stream-btn-spotify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .stream-btn-youtube {
+      background: white;
+      color: #1a1a1a;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .stream-btn-youtube svg { color: #ff0000; }
+    .stream-btn-youtube:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    /* === NOTEBOOK DIVIDER === */
+    .notebook-divider {
+      padding: 0 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .notebook-line {
+      height: 1px;
+      background: var(--line);
+      opacity: 0.4;
+    }
+
+    /* === TRACKLIST === */
+    .tracklist {
+      padding: 6rem 0;
+      position: relative;
+    }
+    /* Lined paper background */
+    .tracklist-paper {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          var(--paper) 0px,
+          var(--paper) 39px,
+          var(--line-faint) 39px,
+          var(--line-faint) 40px
+        );
+      opacity: 0.5;
+    }
+    .tracklist-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 3rem;
+    }
+    .section-label-hand {
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink-light);
+      margin-left: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .track {
+      display: grid;
+      grid-template-columns: 45px 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+    .track::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 45px;
+      right: 0;
+      height: 1px;
+      background: var(--line-faint);
+      opacity: 0.6;
+    }
+    .track:last-child::after { display: none; }
+    .track:hover {
+      background: rgba(74, 70, 168, 0.04);
+      transform: translateX(6px);
+    }
+    .track-num {
+      font-family: var(--font-hand);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink-faint);
+      text-align: center;
+      transition: color 0.3s;
+    }
+    .track:hover .track-num { color: var(--accent); }
+    .track-info {}
+    .track-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+      transition: color 0.3s;
+    }
+    .track:hover .track-title { color: var(--accent); }
+    .track-sub {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .track-title-en {
+      font-family: var(--font-hand);
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+    }
+    .track-producer {
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      font-weight: 400;
+      color: var(--ink-faint);
+      padding: 0.15rem 0.6rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 100px;
+    }
+    .track-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .track-duration {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .track-play {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+    }
+    .track:hover .track-play { opacity: 1; transform: scale(1); }
+    .track-play svg { width: 10px; height: 10px; fill: var(--accent); margin-left: 2px; }
+
+    /* === ABOUT === */
+    .about {
+      padding: 6rem 0 8rem;
+    }
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-sticky {
+      position: sticky;
+      top: 7rem;
+    }
+    .about-quote {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .about-quote em {
+      font-style: normal;
+      text-decoration: underline;
+      text-decoration-color: var(--accent-soft);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+    }
+    .about-quote-attr {
+      margin-top: 1.5rem;
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      color: var(--ink-muted);
+    }
+    .about-heading {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+    .about-text {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 2.1;
+      color: var(--ink-light);
+      margin-bottom: 1.5rem;
+    }
+    .about-text:last-of-type { margin-bottom: 0; }
+
+    /* Credits card */
+    .credits {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px var(--shadow), 0 0 0 1px rgba(0,0,0,0.03);
+    }
+    .credits-title {
+      font-family: var(--font-sans);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .credit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0;
+    }
+    .credit-row + .credit-row { border-top: 1px solid rgba(0,0,0,0.03); }
+    .credit-label {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+    }
+    .credit-value {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+
+    /* === CTA === */
+    .cta-section {
+      padding: 8rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          var(--paper-warm) 0px,
+          var(--paper-warm) 39px,
+          var(--line-faint) 39px,
+          var(--line-faint) 40px
+        );
+      opacity: 0.35;
+    }
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+    .cta-hand {
+      font-family: var(--font-hand);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .cta-sub {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink-muted);
+      margin-bottom: 2.5rem;
+    }
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .cta-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: white;
+      background: var(--ink);
+      padding: 0.9rem 2.2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.35s ease;
+    }
+    .cta-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(28, 26, 24, 0.2);
+    }
+    .cta-btn-primary svg { width: 16px; height: 16px; }
+    .cta-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 0.9rem 2.2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.35s ease;
+    }
+    .cta-btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+    .cta-btn-secondary svg { width: 16px; height: 16px; }
+
+    /* === MARGIN NOTES (decorative) === */
+    .margin-note {
+      position: absolute;
+      font-family: var(--font-hand);
+      font-size: 0.9rem;
+      color: var(--ink-faint);
+      transform: rotate(-5deg);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* === ANIMATIONS === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    .reveal-d5 { transition-delay: 0.40s; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 7rem 0 4rem; }
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+      .album-art {
+        max-width: 280px;
+        margin: 0 auto;
+        transform: translateY(30px) rotate(0deg);
+      }
+      @keyframes artReveal {
+        to { opacity: 1; transform: translateY(0) rotate(0deg); }
+      }
+      .album-note { display: none; }
+      .tape { right: 20px; }
+      .tape-2 { left: 15px; }
+      .hero-desc { max-width: 100%; }
+      .stream-buttons { justify-content: center; }
+      .hero-title-en { transform: none; }
+      .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .about-sticky { position: static; }
+      .track { grid-template-columns: 35px 1fr auto; gap: 1rem; padding: 1.2rem 0.5rem; }
+      .track-producer { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      .container { padding: 0 1.5rem; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+      .margin-note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="paper-texture"></div>
+
+  <!-- Nav -->
+  <nav>
+    <span class="nav-left">0. Reason</span>
+    <a href="#listen" class="nav-listen">스트리밍</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-layout">
+        <div class="album-frame">
+          <div class="album-shadow"></div>
+          <div class="album-art">
+            <div class="tape"></div>
+            <div class="tape tape-2"></div>
+            <img src="album-cover.jpg" alt="이유 EP 앨범 커버">
+          </div>
+          <div class="album-note">첫 번째 기록</div>
+        </div>
+        <div class="hero-text">
+          <div class="hero-ep-label">Extended Play · 2025</div>
+          <h1 class="hero-title">이유</h1>
+          <div class="hero-title-en">0. Reason</div>
+          <div class="hero-artist">박호성</div>
+          <div class="hero-meta">
+            <span>5곡</span>
+            <div class="dot"></div>
+            <span>14분</span>
+            <div class="dot"></div>
+            <span>2025. 4. 9</span>
+          </div>
+          <p class="hero-desc">
+            스물하나의 시선으로 바라본 세상.<br>
+            관심, 정체성, 시간, 그리고 이름 —<br>
+            모든 것에는 이유가 있다.
+          </p>
+          <div class="stream-buttons">
+            <a href="https://music.apple.com/kr/album/%EC%9D%B4%EC%9C%A0-ep/1806310350" target="_blank" class="stream-btn stream-btn-apple">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026-.747.043-1.49.123-2.193.4-1.336.53-2.3 1.452-2.865 2.78-.192.448-.292.925-.363 1.408-.056.392-.088.785-.1 1.18 0 .032-.007.062-.01.093v12.223c.01.14.017.283.027.424.05.815.154 1.624.497 2.373.65 1.42 1.738 2.353 3.234 2.802.42.127.856.187 1.293.228.555.053 1.11.06 1.667.06h11.03c.525 0 1.048-.034 1.57-.1.823-.106 1.597-.35 2.296-.81a5.046 5.046 0 001.88-2.207c.186-.42.293-.87.37-1.324.113-.675.138-1.358.137-2.04-.002-3.8 0-7.595-.003-11.393zm-6.423 3.99v5.712c0 .417-.058.827-.244 1.206-.29.59-.76.962-1.388 1.14-.35.1-.706.157-1.07.173-.95.042-1.8-.6-1.965-1.483-.18-.965.407-1.89 1.356-2.122.395-.097.8-.16 1.196-.26.258-.065.467-.2.556-.47.03-.09.05-.19.05-.29v-3.61a.477.477 0 00-.127-.349.517.517 0 00-.345-.15c-.053-.003-.107 0-.16.005l-4.132.552c-.02.002-.04.008-.058.012a.374.374 0 00-.327.387v.095c.002 1.63 0 4.975 0 6.156 0 .418-.052.83-.234 1.213-.283.6-.76.98-1.397 1.16-.35.098-.71.155-1.073.17-.927.04-1.78-.56-1.96-1.434-.196-.95.37-1.882 1.313-2.14.394-.107.8-.176 1.197-.27.26-.06.467-.19.558-.45.038-.11.054-.227.054-.344V8.372c0-.252.063-.476.238-.66.15-.16.34-.26.554-.293.146-.023.293-.04.44-.06l4.453-.6c.2-.027.4-.06.6-.073.374-.025.603.19.617.56.004.082.002.164.002.246l-.002 3.522z"/></svg>
+              Apple Music
+            </a>
+            <a href="https://open.spotify.com/search/%EB%B0%95%ED%98%B8%EC%84%B1%20%EC%9D%B4%EC%9C%A0" target="_blank" class="stream-btn stream-btn-spotify">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              Spotify
+            </a>
+            <a href="https://music.youtube.com/search?q=%EB%B0%95%ED%98%B8%EC%84%B1+%EC%9D%B4%EC%9C%A0" target="_blank" class="stream-btn stream-btn-youtube">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              YouTube
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Margin note decoration -->
+    <div class="margin-note" style="top: 15%; right: 5%; transform: rotate(-8deg);">track 03이 제일 좋아</div>
+    <div class="margin-note" style="bottom: 20%; left: 3%; transform: rotate(3deg);">2025.04.09 ♪</div>
+  </section>
+
+  <!-- Divider -->
+  <div class="notebook-divider"><div class="notebook-line"></div></div>
+
+  <!-- Tracklist -->
+  <section class="tracklist">
+    <div class="tracklist-paper"></div>
+    <div class="container tracklist-inner">
+      <div class="section-label reveal">
+        수록곡 <span class="section-label-hand">Tracklist</span>
+      </div>
+
+      <div class="track reveal reveal-d1">
+        <span class="track-num">1.</span>
+        <div class="track-info">
+          <div class="track-title">관심병</div>
+          <div class="track-sub">
+            <span class="track-title-en">Gwansimbyeong</span>
+            <span class="track-producer">prod. 박호성</span>
+          </div>
+        </div>
+        <div class="track-right">
+          <span class="track-duration">2:07</span>
+          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+        </div>
+      </div>
+
+      <div class="track reveal reveal-d2">
+        <span class="track-num">2.</span>
+        <div class="track-info">
+          <div class="track-title">Persona</div>
+          <div class="track-sub">
+            <span class="track-title-en">페르소나</span>
+            <span class="track-producer">prod. nuhubeats</span>
+          </div>
+        </div>
+        <div class="track-right">
+          <span class="track-duration">3:04</span>
+          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+        </div>
+      </div>
+
+      <div class="track reveal reveal-d3">
+        <span class="track-num">3.</span>
+        <div class="track-info">
+          <div class="track-title">스물하나</div>
+          <div class="track-sub">
+            <span class="track-title-en">Twenty-One</span>
+            <span class="track-producer">prod. Mantra</span>
+          </div>
+        </div>
+        <div class="track-right">
+          <span class="track-duration">4:07</span>
+          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+        </div>
+      </div>
+
+      <div class="track reveal reveal-d4">
+        <span class="track-num">4.</span>
+        <div class="track-info">
+          <div class="track-title">지금</div>
+          <div class="track-sub">
+            <span class="track-title-en">Now</span>
+            <span class="track-producer">prod. beatbauerjonas</span>
+          </div>
+        </div>
+        <div class="track-right">
+          <span class="track-duration">3:37</span>
+          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+        </div>
+      </div>
+
+      <div class="track reveal reveal-d5">
+        <span class="track-num">5.</span>
+        <div class="track-info">
+          <div class="track-title">이름</div>
+          <div class="track-sub">
+            <span class="track-title-en">Name</span>
+            <span class="track-producer">prod. 박호성</span>
+          </div>
+        </div>
+        <div class="track-right">
+          <span class="track-duration">1:26</span>
+          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="notebook-divider"><div class="notebook-line"></div></div>
+
+  <!-- About -->
+  <section class="about">
+    <div class="container">
+      <div class="section-label reveal">앨범 소개 <span class="section-label-hand">About this EP</span></div>
+      <div class="about-layout">
+        <div class="about-sticky reveal">
+          <blockquote class="about-quote">
+            모든 감정에는<br>
+            <em>이유</em>가 있고,<br>
+            모든 이유에는<br>
+            이름이 있다.
+          </blockquote>
+          <div class="about-quote-attr">— 박호성, 이유 EP를 쓰며</div>
+        </div>
+        <div>
+          <h2 class="about-heading reveal">스물하나의 시선으로<br>써 내려간 다섯 편의 이야기</h2>
+          <p class="about-text reveal reveal-d1">
+            박호성의 첫 번째 EP 「이유」는 스물한 살이라는 시간 위에서 마주한
+            감정들을 솔직하게 풀어낸 작품이다. 타인의 시선에 흔들리는 마음을 담은
+            '관심병'으로 문을 열고, 진짜 나와 보여주는 나 사이의 간극을
+            'Persona'에서 탐색한다.
+          </p>
+          <p class="about-text reveal reveal-d2">
+            가장 긴 호흡의 '스물하나'에서는 지금 이 나이만이 가질 수 있는
+            불안과 기대를 교차시키며, '지금'은 흘러가는 순간을 붙잡으려는
+            절실함을 노래한다. 마지막 트랙 '이름'은 자신에게 부여된
+            이름의 무게를 짧지만 깊게 되짚으며 EP의 여운을 남긴다.
+          </p>
+          <p class="about-text reveal reveal-d3">
+            줄 노트 위에 손글씨로 적은 앨범 커버처럼, 이 EP는 꾸밈없는
+            날것의 감정을 기록한다. 14분이라는 짧은 시간 안에
+            박호성이라는 아티스트의 세계관이 온전히 담겨 있다.
+          </p>
+
+          <div class="credits reveal reveal-d4">
+            <div class="credits-title">크레딧</div>
+            <div class="credit-row">
+              <span class="credit-label">아티스트</span>
+              <span class="credit-value">박호성</span>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">발매일</span>
+              <span class="credit-value">2025년 4월 9일</span>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">장르</span>
+              <span class="credit-value">Korean Hip-Hop</span>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">유통</span>
+              <span class="credit-value">미러볼뮤직</span>
+            </div>
+            <div class="credit-row">
+              <span class="credit-label">수록곡</span>
+              <span class="credit-value">5곡 · 14분</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="notebook-divider"><div class="notebook-line"></div></div>
+
+  <!-- CTA -->
+  <section class="cta-section" id="listen">
+    <div class="container cta-content">
+      <div class="reveal">
+        <div class="cta-hand">지금, 당신의 이유를 들어보세요</div>
+        <p class="cta-sub">모든 스트리밍 플랫폼에서 감상할 수 있습니다</p>
+      </div>
+      <div class="cta-buttons reveal reveal-d1">
+        <a href="https://music.apple.com/kr/album/%EC%9D%B4%EC%9C%A0-ep/1806310350" target="_blank" class="cta-btn-primary">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026-.747.043-1.49.123-2.193.4-1.336.53-2.3 1.452-2.865 2.78-.192.448-.292.925-.363 1.408-.056.392-.088.785-.1 1.18 0 .032-.007.062-.01.093v12.223c.01.14.017.283.027.424.05.815.154 1.624.497 2.373.65 1.42 1.738 2.353 3.234 2.802.42.127.856.187 1.293.228.555.053 1.11.06 1.667.06h11.03c.525 0 1.048-.034 1.57-.1.823-.106 1.597-.35 2.296-.81a5.046 5.046 0 001.88-2.207c.186-.42.293-.87.37-1.324.113-.675.138-1.358.137-2.04-.002-3.8 0-7.595-.003-11.393zm-6.423 3.99v5.712c0 .417-.058.827-.244 1.206-.29.59-.76.962-1.388 1.14-.35.1-.706.157-1.07.173-.95.042-1.8-.6-1.965-1.483-.18-.965.407-1.89 1.356-2.122.395-.097.8-.16 1.196-.26.258-.065.467-.2.556-.47.03-.09.05-.19.05-.29v-3.61a.477.477 0 00-.127-.349.517.517 0 00-.345-.15c-.053-.003-.107 0-.16.005l-4.132.552c-.02.002-.04.008-.058.012a.374.374 0 00-.327.387v.095c.002 1.63 0 4.975 0 6.156 0 .418-.052.83-.234 1.213-.283.6-.76.98-1.397 1.16-.35.098-.71.155-1.073.17-.927.04-1.78-.56-1.96-1.434-.196-.95.37-1.882 1.313-2.14.394-.107.8-.176 1.197-.27.26-.06.467-.19.558-.45.038-.11.054-.227.054-.344V8.372c0-.252.063-.476.238-.66.15-.16.34-.26.554-.293.146-.023.293-.04.44-.06l4.453-.6c.2-.027.4-.06.6-.073.374-.025.603.19.617.56.004.082.002.164.002.246l-.002 3.522z"/></svg>
+          Apple Music에서 듣기
+        </a>
+        <a href="https://open.spotify.com/search/%EB%B0%95%ED%98%B8%EC%84%B1%20%EC%9D%B4%EC%9C%A0" target="_blank" class="cta-btn-secondary">
+          <svg viewBox="0 0 24 24" fill="#1db954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          Spotify에서 듣기
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-left">© 2025 박호성 · 미러볼뮤직</span>
+        <div class="footer-links">
+          <a href="https://music.apple.com/kr/artist/%EB%B0%95%ED%98%B8%EC%84%B1/1806260973" target="_blank">Apple Music</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Album art tilt
+    const albumArt = document.querySelector('.album-art');
+    const frame = document.querySelector('.album-frame');
+    if (window.innerWidth > 768 && frame) {
+      frame.addEventListener('mousemove', (e) => {
+        const rect = frame.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        albumArt.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 6}deg) rotate(-1deg)`;
+        albumArt.style.transition = 'transform 0.1s ease';
+      });
+      frame.addEventListener('mouseleave', () => {
+        albumArt.style.transform = 'perspective(800px) rotateY(0) rotateX(0) rotate(-1deg)';
+        albumArt.style.transition = 'transform 0.5s ease';
+      });
+    }
+
+    // Parallax margin notes
+    const marginNotes = document.querySelectorAll('.margin-note');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          marginNotes.forEach((note, i) => {
+            const speed = 0.03 + i * 0.02;
+            note.style.transform += ` translateY(${scrollY * speed}px)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+</body>
+</html>
