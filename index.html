@@ -446,6 +446,134 @@
     .track:hover .track-play { opacity: 1; transform: scale(1); }
     .track-play svg { width: 10px; height: 10px; fill: var(--accent); margin-left: 2px; }
 
+    /* Track wrapper for accordion */
+    .track-wrapper { position: relative; }
+    .track-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 45px;
+      right: 0;
+      height: 1px;
+      background: var(--line-faint);
+      opacity: 0.6;
+    }
+    .track-wrapper:last-child::after { display: none; }
+    .track-wrapper .track::after { display: none; }
+    .track.active {
+      background: rgba(74, 70, 168, 0.04);
+    }
+    .track.active .track-num { color: var(--accent); }
+    .track.active .track-title { color: var(--accent); }
+    .track.active .track-play { opacity: 1; transform: scale(1); }
+
+    /* Lyrics panel */
+    .lyrics-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lyrics-panel.open {
+      max-height: 2000px;
+      transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lyrics-inner {
+      padding: 0 1.2rem 2rem 4.5rem;
+      position: relative;
+    }
+    .lyrics-notebook {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 1px 4px var(--shadow), 0 0 0 1px rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+    .lyrics-notebook::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          transparent 0px,
+          transparent 31px,
+          var(--line-faint) 31px,
+          var(--line-faint) 32px
+        );
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .lyrics-notebook::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 3rem;
+      width: 1px;
+      background: var(--red-mark);
+      opacity: 0.15;
+    }
+    .lyrics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--line-faint);
+      position: relative;
+    }
+    .lyrics-track-name {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .lyrics-close {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+    .lyrics-close:hover {
+      background: var(--accent-faint);
+      border-color: var(--accent-soft);
+      color: var(--accent);
+    }
+    .lyrics-body {
+      position: relative;
+    }
+    .lyrics-line {
+      font-family: var(--font-serif);
+      font-size: 0.92rem;
+      font-weight: 400;
+      line-height: 2;
+      color: var(--ink-light);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .lyrics-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .lyrics-line.empty {
+      height: 1.6rem;
+    }
+    .lyrics-hint {
+      font-family: var(--font-hand);
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-align: right;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
     /* === ABOUT === */
     .about {
       padding: 6rem 0 8rem;
@@ -782,79 +910,94 @@
         수록곡 <span class="section-label-hand">Tracklist</span>
       </div>
 
-      <div class="track reveal reveal-d1">
-        <span class="track-num">1.</span>
-        <div class="track-info">
-          <div class="track-title">관심병</div>
-          <div class="track-sub">
-            <span class="track-title-en">Gwansimbyeong</span>
-            <span class="track-producer">prod. 박호성</span>
+      <div class="track-wrapper reveal reveal-d1">
+        <div class="track" data-track="0">
+          <span class="track-num">1.</span>
+          <div class="track-info">
+            <div class="track-title">관심병</div>
+            <div class="track-sub">
+              <span class="track-title-en">Gwansimbyeong</span>
+              <span class="track-producer">prod. 박호성</span>
+            </div>
+          </div>
+          <div class="track-right">
+            <span class="track-duration">2:07</span>
+            <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
           </div>
         </div>
-        <div class="track-right">
-          <span class="track-duration">2:07</span>
-          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        </div>
+        <div class="lyrics-panel" id="lyrics-0"></div>
       </div>
 
-      <div class="track reveal reveal-d2">
-        <span class="track-num">2.</span>
-        <div class="track-info">
-          <div class="track-title">Persona</div>
-          <div class="track-sub">
-            <span class="track-title-en">페르소나</span>
-            <span class="track-producer">prod. nuhubeats</span>
+      <div class="track-wrapper reveal reveal-d2">
+        <div class="track" data-track="1">
+          <span class="track-num">2.</span>
+          <div class="track-info">
+            <div class="track-title">Persona</div>
+            <div class="track-sub">
+              <span class="track-title-en">페르소나</span>
+              <span class="track-producer">prod. nuhubeats</span>
+            </div>
+          </div>
+          <div class="track-right">
+            <span class="track-duration">3:04</span>
+            <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
           </div>
         </div>
-        <div class="track-right">
-          <span class="track-duration">3:04</span>
-          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        </div>
+        <div class="lyrics-panel" id="lyrics-1"></div>
       </div>
 
-      <div class="track reveal reveal-d3">
-        <span class="track-num">3.</span>
-        <div class="track-info">
-          <div class="track-title">스물하나</div>
-          <div class="track-sub">
-            <span class="track-title-en">Twenty-One</span>
-            <span class="track-producer">prod. Mantra</span>
+      <div class="track-wrapper reveal reveal-d3">
+        <div class="track" data-track="2">
+          <span class="track-num">3.</span>
+          <div class="track-info">
+            <div class="track-title">스물하나</div>
+            <div class="track-sub">
+              <span class="track-title-en">Twenty-One</span>
+              <span class="track-producer">prod. Mantra</span>
+            </div>
+          </div>
+          <div class="track-right">
+            <span class="track-duration">4:07</span>
+            <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
           </div>
         </div>
-        <div class="track-right">
-          <span class="track-duration">4:07</span>
-          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        </div>
+        <div class="lyrics-panel" id="lyrics-2"></div>
       </div>
 
-      <div class="track reveal reveal-d4">
-        <span class="track-num">4.</span>
-        <div class="track-info">
-          <div class="track-title">지금</div>
-          <div class="track-sub">
-            <span class="track-title-en">Now</span>
-            <span class="track-producer">prod. beatbauerjonas</span>
+      <div class="track-wrapper reveal reveal-d4">
+        <div class="track" data-track="3">
+          <span class="track-num">4.</span>
+          <div class="track-info">
+            <div class="track-title">지금</div>
+            <div class="track-sub">
+              <span class="track-title-en">Now</span>
+              <span class="track-producer">prod. beatbauerjonas</span>
+            </div>
+          </div>
+          <div class="track-right">
+            <span class="track-duration">3:37</span>
+            <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
           </div>
         </div>
-        <div class="track-right">
-          <span class="track-duration">3:37</span>
-          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        </div>
+        <div class="lyrics-panel" id="lyrics-3"></div>
       </div>
 
-      <div class="track reveal reveal-d5">
-        <span class="track-num">5.</span>
-        <div class="track-info">
-          <div class="track-title">이름</div>
-          <div class="track-sub">
-            <span class="track-title-en">Name</span>
-            <span class="track-producer">prod. 박호성</span>
+      <div class="track-wrapper reveal reveal-d5">
+        <div class="track" data-track="4">
+          <span class="track-num">5.</span>
+          <div class="track-info">
+            <div class="track-title">이름</div>
+            <div class="track-sub">
+              <span class="track-title-en">Name</span>
+              <span class="track-producer">prod. 박호성</span>
+            </div>
+          </div>
+          <div class="track-right">
+            <span class="track-duration">1:26</span>
+            <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
           </div>
         </div>
-        <div class="track-right">
-          <span class="track-duration">1:26</span>
-          <div class="track-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        </div>
+        <div class="lyrics-panel" id="lyrics-4"></div>
       </div>
     </div>
   </section>
@@ -961,6 +1104,394 @@
   </footer>
 
   <script>
+    // Lyrics data
+    const lyricsData = [
+      { title: '관심병', lines: `Show interest am i interestin?
+Show interest am i interestin?
+Show interest am i interestin?
+Show interest am i interestin?
+
+관심을 줘 내게도 더
+벌어도 뿌려야 해 관심을 더
+원해 난 큰 무대 관객을 채워
+뛰어놀아 나빌 본 강아지처럼
+
+명반보다는 멜론의 팬 수를
+가수보다는 엔터테이너를
+아티스트보다는 내 이름의 의미를
+아는 사람이 많기를
+
+하루는 가고 별들도 져가는데
+내 이름 하나 새겨 이 돌덩이에
+두 다리 뻗고 자는 것보단 감시당하는 게
+편안히 자는 법 침대 위에 분칠이 묻는 게
+
+두세 번의 촬영 하루에 쳐내고 바로
+무대를 다녀 감사한 환호 새로운 섭외는 환영
+불러줘 나를 불러줘 나를
+보여줘 나를 보여줘 나를 보여져 나는
+
+낮과 밤 사이 가려진 시간들같이
+이름 없는 날이 가득 채워진 달력이
+보기 싫었던 건지 TV 속 사람과 달리
+슬퍼 보였던거야 길 위에 사람들이 하나부터 열까지
+나은 게 없어 보였어
+그 뒤 일상까지
+
+지겨운 낮
+지겨운 밤
+또 지겨운 하루
+매일 똑같은
+하룰 지내고 나면 또
+지겨운 하루 똑같은 하루
+
+화면 속은 새로웠어 항상
+매일 받는 찬사
+또 위로받는 사람
+내게도 있었음 했어 그게 다야` },
+
+      { title: 'Persona', lines: `회색에 물들어버린 도시
+그 위에 남들과 다르게 살고 싶던 아이
+TV 속 스타를 보면
+색깔이 보였어
+눈을 감으면 펼쳐진 은하수에 누웠어
+
+쟤는 누구네
+걔는 누구네
+남들이 외우던 이름조차 몰랐던
+미술 시간에 들은 이게 그림이니
+이젠 당당히 맘대로 색칠해
+
+고갤 갸우뚱해
+꿈이 뭐냐는 물음에
+경찰관 소방관 위에 탐정이 자리해
+탐정이 어딨어 우리나라에
+질문에 질문 꼬리에 꼬리를 무니 시무룩해
+
+되물음 해
+꿈이 뭔지에 대해
+장래 희망 엄청난 부자 화목한 가정 뭐 그런 거래
+그때 알았어 다들 가면을 쓰는 이율
+타협하니 기뻐하는 부모님
+
+언제든 하고픈 걸로 가득찼어
+갖은 상상에 심장은 항상 뛰었고
+빈 수렌 요란했지만 언제나 당당했어
+가지런히 모은 작은 두 손으로 기도드렸어
+
+돌아온 건 내 숨소리뿐
+믿음이 없었나봐 내게는
+불안함 그게 없었거든
+그래서 불안했나 봐 부모님은
+
+중간에 멈춰선 두 다리는
+멈추지않았어 같은 곳을 멤돌 뿐
+순탄한 꿈을 찾아 춘 춤들은 알맹이 없는 겉치레일 뿐이었구
+
+가면이 필요했어 날 가려야 해서
+최고와 최선 배려와 위선 다 다른 말
+다 하는 말 열심히 성실히 거짓된 멍들이
+아파온 건 시한부인 걸 느껴서인지
+
+정신이 없다가도 챙겨야 해 내 가족 친구
+말이 떠오르니 어깰 당당히 피고
+내 두 발은 앞으로 향했어 방향은 신경 쓰지 않고
+조금 돌아가게 될지라도 내 두 팔이
+
+멀쩡한 이상 긴장을 놓지 않아
+언제나 비상
+위기감을 느낀 피난길엔 귀감이
+지난 시간이 지금을 위한 필요한 기간
+귀한 비 한줄기가 시급한
+
+집어든 건 커피와 카페인 지샌 밤을
+별에 닿기 위해 달린 날들
+수상은 못해도 무난한 일상을
+잃어버릴 줄 몰랐던 인간들
+
+무너질 줄 몰랐던 감정도
+조금씩 물들어 무력감에
+순간에 부서진 숨은
+돌아올 줄을 몰라 나태한 일상만 가득해
+
+뭘 해야 할지
+어디로 가야 할지
+선택할 수 없어서 침대 위 가지런히 놓인 시체
+피는 말라가고 눈이 죽어갈 때 번뜩 뜨인 눈
+한 그루 나무를 봤네
+
+굳건한 모습은 나를 홀렸고
+동시에 목표를 떠올렸어
+보지 못했던 동경 또 존경
+그곳에 도착에 목숨을 걸어 내 약속의 장소
+
+난 다시 가면을 써
+맞지 않는 옷에 몸을 구겨 넣었고
+꼴은 웃기지만 내 이어폰 속 아이돌은
+내 존재를 상기시켜
+
+심지엔 불이 붙었고 사랑과 피의 색과 같아
+반면 머리는 차갑게 열정과 냉정 둘을 중화시켜
+my ambition의 reason 전부 이 안에 담겨있어` },
+
+      { title: '스물하나', lines: `I think about way to death
+I feel like demon
+난 또 의미 없는 생각을 해
+신이 된듯이
+
+아무리 방안에 박혀서 망상을 해도
+달라진 게 없어 그대로 생활은 무너져가
+약속은 지킬 수 없어 아버지하고의
+이대론 지킬 수 없어 가족 친구마저도
+
+선의를 가지고 또
+거짓은 버리고 또
+의심을 가지고 또
+불안은 버리고 또
+
+겸손을 가지고 또
+욕심을 버리고 또
+가려고 해
+
+때가 됐어 총성이 울려
+좀 늦은 dash 더 빠르게
+I started today 이야긴 계속돼
+막이 오른 무대 위 시간은 스물하나
+
+스물하나에 모인 거라곤 시간의 찌꺼기들
+필요했거든 뭐든 선을 넘기에 부족한 허들
+일요일이 되면 온 전화는
+교회 나오라는 할머니의 잔소리를
+
+난 바랐거든 돈을
+바랬거든 성공을
+어리다 치부하기엔 점점 들어가는 나이는
+무시할 수 없게 돼
+내 나이 스물하나
+무얼 하나 젊으니 괜찮다는
+
+얼빠진 소리들
+넘기고 든 생각은
+바쁘게 산다한들
+티비속에 사람들
+그들의 웃음 속에 숨겨진 고통과 인내들
+빛나는 이유를
+
+찾아야 해 나아가야 해
+살아가야 해 벌어야만 해
+올라가야 해 이뤄야만 해
+우리 엄마 아빠 일 안 하게 해야 해
+
+선의를 가지고 또
+거짓은 버리고 또
+의심을 가지고 또
+불안은 버리고 또
+
+겸손을 가지고 또
+욕심을 버리고 또
+가려고 해
+
+때가 됐어 총성이 울려
+좀 늦은 dash 더 빠르게
+I started today 이야긴 계속돼
+막이 오른 무대 위 시간은 스물하나
+
+어떻게 해야 될지 모르겠어
+일단 들이받아 보자 해봤지만 다리는 끊어져 가
+바라는 걸 다 들고 가려니
+속도는 느려지고 다리는 무너져가
+
+객기란걸 알아 근데 챙겨야 하잖아
+내 모든 사람 사랑 돈 명예 관심까지 다
+그래야 내가 그린 미래 안에 도착할 수 있어
+그 자릴 채우러 가
+
+선의를 가지고 또
+거짓은 버리고 또
+의심을 가지고 또
+불안은 버리고 또
+
+겸손을 가지고 또
+욕심을 버리고 또
+가려고 해
+
+때가 됐어 총성이 울려
+좀 늦은 dash 더 빠르게
+i started today 이야긴 계속돼
+막이 오른 무대 위 시간은 스물하나` },
+
+      { title: '지금', lines: `빛이 내려오는 아침
+산뜻한 바람 타고 온 물감이 묻은 사진
+어디서 온 걸까 주위를 둘러봤지만
+아무도 없어 찾는 사람이
+
+소중해 보이는 한 장면을 찾을 누군갈
+찾아 나서야 할 것 같아서 발을 뻗어 난
+한 걸음 한 걸음 가서야
+찾는 게 맞는지 고민하지
+
+이미 집을 벗어나
+끝이 안 보이는 여정을 떠났지 난
+저 앞에 사람이 보여
+달려가 물었지 당신이 사진의 주인인지
+바로 돌아온 답은 아니요
+
+음 다시
+다시 걸어가
+한숨을 푹 내쉬고 앞으로 걸어가
+얼마나 더 걸어야 그가 웃을까
+후
+좀만 힘내자
+
+저 앞에 사람이 보여
+이번엔 맞을까 기대를 하며 물었지 바로
+제 건 아닌데 시내에 호텔 청소부 거 같아요
+다행히 실마리가 잡힌거 같아 정말 신나요
+
+좀 더 당당해진 걸음 편안해진 호흡
+주위를 둘러보는 여유
+이런 시간이 얼마 만인지 조금
+두근대는 오늘 왜인지 좋은 하늘
+반을 쪼개놓은 물감을 흘린 듯한 구름
+
+시내에 들어선 노점상들
+한 가족이 모여 나눠 먹어 밥을
+그들에겐 당연한 일상을
+난 얼마나 놓쳤는지 잠깐 생각을
+한두 번의 걸음
+뒤에 눈에 들어선 호텔 간판들
+오 이런 너무 많아
+어 이걸 언제 찾아
+
+나를 기다리는 건 다 같아 보이는 빌딩 숲
+그사이를 거닐며 괜히 했나 고민뿐
+두리번두리번해도 모두 같은 얼굴들
+까딱거리는 손엔 감정은 하나 없었고
+
+얼굴이란 얼굴은 다 찾아봐도 사진 속
+화면은 코빼기도 안 뵈고 고개를 똑바로
+세워도 세는 게 지칠 정도로 계속되는 헛수곤
+날 애태워가네 또
+
+멀리 보이는 허름한 호텔에서 비슷한 풍경이 보여
+또 당당히 걸어
+직원의 뒤를 톡 치면서 물어
+당신이 사진의 주인인지
+돌아온 답은 역시 아니요
+
+한숨을 푹 내쉬며 뒤를 돌아보니
+누군가 내 뒤를 툭 치면서 물어
+당신이 사진의 주인인지
+묻은 물감을 쓱 지우니` },
+
+      { title: '이름', lines: `내 이름 ㅂㅎㅅ
+부모님이 지은 이름 큰 꿈을 이룬
+03년 5월 3일 어린아이 눕히네
+큰 집에선 반대했다대 이 이름
+
+너무 큰 이름 내 겐 너무 큰 이름
+이 빚은 갚아야 해 계속해서 일을
+멈출 수가 없어 너무 크거든 이 이름
+근데 어쩌겠어 맘에 들었거든 이 이름
+
+내 야망의 첫 번째 일은
+기름집보다 버는 거야 근데 지금
+아빠 차는 계속해서 부릉
+엄마도 일해 기름 튄 손에 흉터는 이런
+
+벌어야 하니까 돈을 덜어야 하니까 걱정을
+돈돈돈돈 돈 얘기 지겨워 나도 알아
+근데 살아야 하잖아 살려면 다 그런 거잖아
+성공과 돈은 정비례하니까 실패에 가까운 건가
+
+후
+
+돈 없이 살라니까 비굴해지대
+친구 선물을 줄 수 없어 생일은 조용히
+미역국 한 번 못 해준 아들은 상다리 부러지게
+차리기 전까지 한 밤도 쉴 수 없지
+
+내 이름의 의미를 알게 된 이상
+해야겠지 이름값
+하지만 너무 비싸서 이자가 쌓여 있어
+이 비트와 나를 위한 시기가 이율 만들어
+산와머니보다 높아진
+
+과거로 돌아간다면 I'll be die
+두 번은 못 살아 깨달은 게 너무 많아
+겁은 아냐
+서울의 바깥보다 어두운 방 안
+차가운 바닥보다 차가운 상황
+바라본 창밖은 차들이 다니네
+
+가끔 걸려 오는 아버지의 한탄
+돈 달라고 연락오는 동생
+그다음은 집에 오길 바라는 어머니의 사랑
+내 바람과는 다르게 흘러가는 상황들
+해내야 해 이름값` }
+    ];
+
+    // Lyrics toggle logic
+    let openTrack = -1;
+
+    function closeLyrics(idx) {
+      const panel = document.getElementById(`lyrics-${idx}`);
+      const track = document.querySelector(`.track[data-track="${idx}"]`);
+      if (panel) {
+        panel.classList.remove('open');
+        setTimeout(() => { panel.innerHTML = ''; }, 500);
+      }
+      if (track) track.classList.remove('active');
+      openTrack = -1;
+    }
+
+    function openLyrics(idx) {
+      const data = lyricsData[idx];
+      const panel = document.getElementById(`lyrics-${idx}`);
+      const track = document.querySelector(`.track[data-track="${idx}"]`);
+      if (!panel || !data) return;
+
+      const lines = data.lines.split('\n');
+      let html = `<div class="lyrics-inner"><div class="lyrics-notebook">`;
+      html += `<div class="lyrics-header">`;
+      html += `<span class="lyrics-track-name">${data.title}</span>`;
+      html += `<button class="lyrics-close" onclick="closeLyrics(${idx})">✕</button>`;
+      html += `</div><div class="lyrics-body">`;
+      lines.forEach((line, i) => {
+        if (line.trim() === '') {
+          html += `<div class="lyrics-line empty" style="transition-delay:${Math.min(i * 0.02, 1.5)}s"></div>`;
+        } else {
+          html += `<div class="lyrics-line" style="transition-delay:${Math.min(i * 0.02, 1.5)}s">${line}</div>`;
+        }
+      });
+      html += `</div>`;
+      html += `<div class="lyrics-hint">작사 · 박호성</div>`;
+      html += `</div></div>`;
+
+      panel.innerHTML = html;
+      track.classList.add('active');
+      openTrack = idx;
+
+      requestAnimationFrame(() => {
+        panel.classList.add('open');
+        setTimeout(() => {
+          panel.querySelectorAll('.lyrics-line').forEach(el => el.classList.add('visible'));
+        }, 200);
+      });
+    }
+
+    document.querySelectorAll('.track[data-track]').forEach(track => {
+      track.addEventListener('click', () => {
+        const idx = parseInt(track.dataset.track);
+        if (openTrack === idx) {
+          closeLyrics(idx);
+        } else {
+          if (openTrack >= 0) closeLyrics(openTrack);
+          setTimeout(() => openLyrics(idx), openTrack >= 0 ? 300 : 0);
+        }
+      });
+    });
+
     // Scroll reveal
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
@@ -996,7 +1527,7 @@
           const scrollY = window.scrollY;
           marginNotes.forEach((note, i) => {
             const speed = 0.03 + i * 0.02;
-            note.style.transform += ` translateY(${scrollY * speed}px)`;
+            note.style.transform = `rotate(${i === 0 ? -8 : 3}deg) translateY(${scrollY * speed}px)`;
           });
           ticking = false;
         });
